@@ -1,8 +1,12 @@
+# Extract one day of data in a rough square arround Manhattan, save times, positions and prices
+
 library(bigrquery)
 library(stringr)
 project = "taxi-finance"
 month = 6
-for (i in 1:30 ) {
+firstDay = 1
+lastDay = 30
+for (i in firstDay:lastDay ) {
   sql <- paste('SELECT FLOAT(trip.pickup_latitude) AS plat, FLOAT(trip.pickup_longitude) AS plong, FLOAT(trip.dropoff_latitude) AS dlat, FLOAT(trip.pickup_longitude) AS dlong, trip.pickup_datetime AS ptime, trip.dropoff_datetime AS dtime, FLOAT(fare.total_amount) AS price, FLOAT(fare.tip_amount) AS tip
 FROM [833682135931:nyctaxi.trip_data] AS trip
 JOIN EACH [833682135931:nyctaxi.trip_fare] AS fare

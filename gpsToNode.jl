@@ -3,9 +3,9 @@ using KDTrees, TaxiSimulation, Geodesy, DataFrames, LightGraphs
 m=Manhattan()
 MANHATTAN_CENTER = LLA(40.782, -73.9706)
 
-months = collect([1:12])
-days = [
-collect(7:13), collect(2:2), collect(1:8), collect(1:10), collect(1:8), collect(1:12),
+months = collect(1:12)
+days = Vector{Int}[
+collect(7:13), collect(2:2), collect(1:8), collect(1:10), collect(1:8), collect(1:16),
 collect(1:0), collect(1:0), collect(1:0), collect(1:0), collect(1:0), collect(1:0)
 ]
 
@@ -33,7 +33,7 @@ nodes[2,:] = nodesY
 tree = KDTree(nodes)
 println(tree)
 
-for month in months, day in days[m]
+for month in months, day in days[month]
     @printf("2013-%02i-%02i\n",month,day)
 
     df = readtable(@sprintf("data/2013-%02i-%02i.csv",month,day))
