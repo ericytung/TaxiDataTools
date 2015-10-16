@@ -1,2 +1,6 @@
 *.httr-oauth
 *.csv
+.httr-oauth
+.DS_Store
+.Rhistory
+data/*

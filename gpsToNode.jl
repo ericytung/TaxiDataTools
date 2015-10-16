@@ -1,15 +1,43 @@
-using KDTrees, TaxiSimulation, Geodesy, DataFrames
+using KDTrees, TaxiSimulation, Geodesy, DataFrames, LightGraphs
 
 m=Manhattan()
 MANHATTAN_CENTER = LLA(40.782, -73.9706)
 
-month = 1
-firstDay = 8
-lastDay = 13
+months = collect([1:12])
+days = [
+collect(7:13), collect(2:2), collect(1:8), collect(1:10), collect(1:8), collect(1:12),
+collect(1:0), collect(1:0), collect(1:0), collect(1:0), collect(1:0), collect(1:0)
+]
 
-for j = firstDay:lastDay
-    @printf("2013-%02i-%02i\n",month,j)
-    df = readtable(@sprintf("data/2013-%02i-%02i.csv",month,j))
+
+nodesX = Float64[]
+nodesY = Float64[]
+nodesID = Int[]
+for (i,p) in enumerate(m.positions)
+    nodeInHighway = false
+    for n in out_neighbors(m.network,i)
+        nodeInHighway = nodeInHighway || m.roadType[i,n] == 8
+    end
+    for n in in_neighbors(m.network,i)
+        nodeInHighway = nodeInHighway || m.roadType[n,i] == 8
+    end
+    if !nodeInHighway
+        push!(nodesX, p.x)
+        push!(nodesY, p.y)
+        push!(nodesID, i)
+    end
+end
+nodes = Array(Float64, (2,length(nodesX)))
+nodes[1,:] = nodesX
+nodes[2,:] = nodesY
+tree = KDTree(nodes)
+println(tree)
+
+for month in months, day in days[m]
+    @printf("2013-%02i-%02i\n",month,day)
+
+    df = readtable(@sprintf("data/2013-%02i-%02i.csv",month,day))
+
     px = Array(Float64,nrow(df))
     py = Array(Float64,nrow(df))
     dx = Array(Float64,nrow(df))
@@ -24,27 +52,15 @@ for j = firstDay:lastDay
         dy[i] = dENU.north
     end
 
-
-    nodes = Array(Float64, (2,length(m.positions)))
-    for (i,p) in enumerate(m.positions)
-        nodes[1,i] = p.x
-        nodes[2,i] = p.y
-    end
-
-    tree = KDTree(nodes)
-    pnode = Int[knn(tree,[px[i],py[i]],1)[1][1] for i in 1:length(px)]
-    dnode = Int[knn(tree,[dx[i],dy[i]],1)[1][1] for i in 1:length(dx)]
+    pnode = Int[nodesID[knn(tree,[px[i],py[i]],1)[1][1]] for i in 1:length(px)]
+    dnode = Int[nodesID[knn(tree,[dx[i],dy[i]],1)[1][1]] for i in 1:length(dx)]
 
     delete!(df,:plat)
     delete!(df,:plong)
     delete!(df,:dlat)
     delete!(df,:dlong)
 
-    df[:px] = px
-    df[:py] = py
-    df[:dx] = dx
-    df[:dy] = dy
     df[:pnode] = pnode
     df[:dnode] = dnode
-    writetable(@sprintf("data/2013-%02i-%02i-new.csv",month,j),df)
+    writetable(@sprintf("data/2013-%02i-%02i-new.csv",month,day),df)
 end
