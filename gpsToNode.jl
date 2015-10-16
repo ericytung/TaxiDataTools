@@ -5,7 +5,7 @@ MANHATTAN_CENTER = LLA(40.782, -73.9706)
 
 months = collect(1:12)
 days = Vector{Int}[
-collect(7:13), collect(2:2), collect(1:8), collect(1:10), collect(1:8), collect(1:16),
+collect(7:13), collect(2:2), collect(1:8), collect(1:10), collect(1:8), collect(1:30),
 collect(1:0), collect(1:0), collect(1:0), collect(1:0), collect(1:0), collect(1:0)
 ]
 

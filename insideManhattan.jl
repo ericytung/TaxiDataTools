@@ -5,7 +5,7 @@ city = [(40.87851017592601,-73.927903175354);(40.87743937506905,-73.921680450439
 
 months = collect(1:12)
 days = Vector{Int}[
-collect(7:13), collect(2:2), collect(1:8), collect(1:10), collect(1:8), collect(1:16),
+collect(7:13), collect(2:2), collect(1:8), collect(1:10), collect(1:8), collect(1:30),
 collect(1:0), collect(1:0), collect(1:0), collect(1:0), collect(1:0), collect(1:0)
 ]
 
