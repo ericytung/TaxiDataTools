@@ -3,7 +3,8 @@ To extract relevant taxi data for NYC Yellow Cabs databases with Julia
 
 ## First step: Download and Merging
 - Download a year of data at https://uofi.app.box.com/NYCtaxidata
-- Use **merging_dataset.sh** to create CSVs with fares and trips : just applying http://hafen.github.io/taxi/
+- Put the 12 monthly zips inside a *data* folder
+- Use **merging_dataset.sh** to create CSVs with fares and trips : just applying http://hafen.github.io/taxi/. It will also run steps 2 and 3 automatically.
 
 ## Second step: Only keeping what is needed.
 We are only interested in the following information:
@@ -19,8 +20,7 @@ Use **data_transform.jl** to remove anything that is not needed, to transform co
 
 ___________________________________
 ##Example of data manipulation and subsetting:
-- **node_projection.jl** projects the GPS coordinates onto the nearest Manhattan's node.
-- **traveltime_files.jl** filter the rides given a time of day (ex: 12 to 2, weekdays). Also tries to remove bad data-points
+- **traveltime_data.jl** projects GPS coordinates onto the nearest node and filters the rides given a time of the day (ex: 12 to 2, weekdays). Also tries to remove bad data-points. 
 
 
 ___________________________________
