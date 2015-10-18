@@ -3,9 +3,9 @@
 library(bigrquery)
 library(stringr)
 project = "taxi-finance"
-month = 6
+month = 7
 firstDay = 1
-lastDay = 30
+lastDay = 31
 for (i in firstDay:lastDay ) {
   sql <- paste('SELECT FLOAT(trip.pickup_latitude) AS plat, FLOAT(trip.pickup_longitude) AS plong, FLOAT(trip.dropoff_latitude) AS dlat, FLOAT(trip.pickup_longitude) AS dlong, trip.pickup_datetime AS ptime, trip.dropoff_datetime AS dtime, FLOAT(fare.total_amount) AS price, FLOAT(fare.tip_amount) AS tip
 FROM [833682135931:nyctaxi.trip_data] AS trip
