@@ -1,16 +1,7 @@
 using Geodesy, DataFrames, JLD, Base.Dates
 
 
-#To select the ride that we keep, given nodes and times (do not have to modify the rest)
 
-# function good_ride(pT::DateTime, dT::DateTime, pN::Int, dN::Int)
-#   #return (dayofweek(pT) <= 5) && (12 <= hour(dT) <= 14) &&
-#   #       (dayofweek(dT) <= 5) && (12 <= hour(dT) <= 14)
-#   return true
-# end
-#
-# #
-#
 MANHATTAN_CENTER = LLA(40.782, -73.9706)
 
 PTIME,DTIME,PLONG,PLAT,DLONG,DLAT,FARE,TIP = 1,2,3,4,5,6,7,8
@@ -26,8 +17,8 @@ for j in 1:12
       println(i)
     end
     s = split(ln,",")
-    pENU = ENU(LLA(parse(Float64,s[PLAT]),parse(Float64,s[PLONG])),MANHATTAN_CENTER)
-    dENU = ENU(LLA(parse(Float64,s[DLAT]),parse(Float64,s[DLONG])),MANHATTAN_CENTER)
+    pENU = ENU(LLA(parse(Float32,s[PLAT]),parse(Float32,s[PLONG])),MANHATTAN_CENTER)
+    dENU = ENU(LLA(parse(Float32,s[DLAT]),parse(Float32,s[DLONG])),MANHATTAN_CENTER)
 
 
     pT = DateTime(s[PTIME], "y-m-d H:M:S")

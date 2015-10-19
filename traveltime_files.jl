@@ -1,4 +1,4 @@
-using KDTrees, TaxiSimulation, JLD, Base.Dates
+using KDTrees, TaxiSimulation, JLD, Base.Dates, DataFrames, LightGraphs
 
 #Ride selector
 function good_ride(df::DataFrame, i::Int)
@@ -39,6 +39,7 @@ end
 nodes = Array(Float64, (2,length(nodesX)))
 nodes[1,:] = nodesX
 nodes[2,:] = nodesY
+
 tree = KDTree(nodes)
 
 data = DataFrame(pTime = DateTime[], dTime=DateTime[], pNode=Int[], dNode=Int[])
@@ -46,14 +47,15 @@ data = DataFrame(pTime = DateTime[], dTime=DateTime[], pNode=Int[], dNode=Int[])
 for j in 1:12
   df = load("data/reduced_trip_$j.jld", "df")
   println("Opening reduced_trip_$j.jld ...")
-  #first: filtering
-  df = df[Bool[good_ride(df,i) for i = 1:nrow(df)],:]
 
   #second : adding rows to dataFrame
   for i in 1:nrow(df)
+    if i%1000000 == 0
+      println(i, " - ", nrow(data))
+    end
     if good_ride(df,i)
-      pN = nodesID[knn(tree,[df[i,:pX],df[i,:pY]],1)[1][1]]
-      dN = nodesID[knn(tree,[df[i,:dX],df[i,:dY]],1)[1][1]]
+      pN = nodesID[knn(tree,[Float64(df[i,:pX]),Float64(df[i,:pY])],1)[1][1]]
+      dN = nodesID[knn(tree,[Float64(df[i,:dX]),Float64(df[i,:dY])],1)[1][1]]
       if pN != dN
         push!(data, [df[i,:pTime], df[i,:dTime], pN, dN])
       end

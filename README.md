@@ -13,14 +13,14 @@ We are only interested in the following information:
 - Total fare of the ride and tip
 - Rides from Manhattan to Manhattan only.
 
-Use **data_transform.jl** to remove anything that is not needed, to transform coordinates into the ENU system, and to only select rides from Manhattan to Manhattan.
+Use **data_transform.jl** to remove anything that is not needed, and to only select rides from Manhattan to Manhattan.
 
 ## Third step: Converting to binary files for faster computations
 **to_JLD.jl** can be executed to convert the data into a DataFrames with extremely fast loading time. (slow to run). It also convert the GPS coordinates into the ENU system
 
 ___________________________________
 ##Example of data manipulation and subsetting:
-- **traveltime_data.jl** projects GPS coordinates onto the nearest node and filters the rides given a time of the day (ex: 12 to 2, weekdays). Also tries to remove bad data-points. 
+- **traveltime_data.jl** projects GPS coordinates onto the nearest node and filters the rides given a time of the day (ex: 12 to 2, weekdays). Also tries to remove bad data-points.
 
 
 ___________________________________
