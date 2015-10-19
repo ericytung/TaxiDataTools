@@ -14,14 +14,14 @@ using Geodesy, DataFrames, JLD, Base.Dates
 MANHATTAN_CENTER = LLA(40.782, -73.9706)
 
 PTIME,DTIME,PLONG,PLAT,DLONG,DLAT,FARE,TIP = 1,2,3,4,5,6,7,8
-for j in 7:12
+for j in 1:12
   df = DataFrame(pTime= DateTime[], dTime= DateTime[],pX=Float32[], pY=Float32[], dX=Float32[], dY=Float32[], fare=Float32[], tip=Float32[])
   println("Opening data/reduced_trip_$j.csv")
   f = open("data/reduced_trip_$j.csv")
   for (i, ln) in enumerate(eachline(f))
     if i == 1
       continue
-    end	
+    end
     if i%1000000 == 0
       println(i)
     end

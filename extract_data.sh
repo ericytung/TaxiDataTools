@@ -12,6 +12,7 @@ for f in data/*.csv; do
 done
 
 echo "Merging datasets"
+
 for i in {1..12}; do
   echo "$i"
   paste -d, "data/trip_data_$i.csv" <(cut -d',' -f5-11 "data/trip_fare_$i.csv") > "data/trip_$i.csv"
